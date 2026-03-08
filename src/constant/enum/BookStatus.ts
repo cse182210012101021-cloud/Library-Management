@@ -1,0 +1,5 @@
+export enum BookStatus {
+  BORROWED = "BORROWED",
+  RETURNED = "RETURNED",
+  TIME_EXCEEDED = "TIME_EXCEEDED",
+}
