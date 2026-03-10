@@ -39,7 +39,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function ChartArea({ chartData = [] }: { chartData?: any[] }) {
+import { UserType } from "@/constant/enum/UserType";
+
+export default function ChartArea({ chartData = [], userType }: { chartData?: any[], userType?: string }) {
   const [timeRange, setTimeRange] = useState("7d");
 
   const filteredData = chartData.filter((item) => {
@@ -168,13 +170,15 @@ export default function ChartArea({ chartData = [] }: { chartData?: any[] }) {
               stroke="var(--color-books)"
               stackId="a"
             />
-            <Area
-              dataKey="users"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-users)"
-              stackId="a"
-            />
+            {userType !== UserType.STUDENT && (
+              <Area
+                dataKey="users"
+                type="natural"
+                fill="url(#fillDesktop)"
+                stroke="var(--color-users)"
+                stackId="a"
+              />
+            )}
           </AreaChart>
         </ChartContainer>
       </CardContent>

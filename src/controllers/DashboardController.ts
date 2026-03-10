@@ -5,7 +5,10 @@ import { MESSAGE } from "@/lib/message";
 
 export class DashboardController {
     static async getDashboardData(req: NextRequest) {
-        const data = await DashboardService.getDashboardData();
+        const userId = req.nextUrl.searchParams.get("userId");
+        const userType = req.nextUrl.searchParams.get("userType");
+
+        const data = await DashboardService.getDashboardData(userId, userType);
 
         return {
             status: HttpStatusCode.OK,
