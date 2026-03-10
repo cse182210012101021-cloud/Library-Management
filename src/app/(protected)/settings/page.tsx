@@ -1,5 +1,5 @@
-import UpcomingSection from "@/section/upcoming-section/UpcomingSection";
+import SettingsSection from "@/section/settings-section/SettingsSection";
 
 export default function Page() {
-  return <UpcomingSection/>;
+  return <SettingsSection />;
 }

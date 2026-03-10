@@ -120,4 +120,24 @@ export class MemberService {
 
     return await this.getMe(userId);
   }
+
+  static async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string
+  ) {
+    const bcryptjs = await import("bcryptjs");
+    const member = await Member.findById(userId);
+    if (!member) return { success: false, message: "User not found" };
+
+    const isValid = await bcryptjs.compare(currentPassword, member.password);
+    if (!isValid)
+      return { success: false, message: "Current password is incorrect" };
+
+    const salt = await bcryptjs.genSalt(10);
+    member.password = await bcryptjs.hash(newPassword, salt);
+    await member.save();
+
+    return { success: true, message: "Password changed successfully" };
+  }
 }

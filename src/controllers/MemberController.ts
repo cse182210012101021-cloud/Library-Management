@@ -88,7 +88,7 @@ export class MemberController {
 
     try {
       const body = await req.json();
-      
+
       const updatedMember = await MemberService.updateMe(userId, {
         image: body.image,
       });
@@ -111,5 +111,54 @@ export class MemberController {
         message: error.message || "Failed to update profile",
       };
     }
+  }
+
+  static async changePassword(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      const body = await req.json();
+      const { userId: bodyUserId, currentPassword, newPassword } = body;
+
+      if (!bodyUserId || !currentPassword || !newPassword) {
+        return {
+          status: HttpStatusCode.BAD_REQUEST,
+          message: "userId, currentPassword, and newPassword are required",
+        };
+      }
+
+      const result = await MemberService.changePassword(
+        bodyUserId,
+        currentPassword,
+        newPassword
+      );
+
+      return {
+        status: result.success ? HttpStatusCode.OK : HttpStatusCode.BAD_REQUEST,
+        message: result.message,
+      };
+    }
+
+    const body = await req.json();
+    const { currentPassword, newPassword } = body;
+
+    if (!currentPassword || !newPassword) {
+      return {
+        status: HttpStatusCode.BAD_REQUEST,
+        message: "currentPassword and newPassword are required",
+      };
+    }
+
+    const result = await MemberService.changePassword(
+      userId,
+      currentPassword,
+      newPassword
+    );
+
+    return {
+      status: result.success ? HttpStatusCode.OK : HttpStatusCode.BAD_REQUEST,
+      message: result.message,
+    };
   }
 }
