@@ -1,74 +1,127 @@
+"use client";
+
 import SummaryCard from "@/components/summary-card/SummaryCard";
 import ChartArea from "@/components/chart-area/ChartArea";
 import DataTable from "@/components/DataTable/DataTable";
 import {
   BookTableHeaders,
-  demoBooksData,
-  demoUserData,
   UserTableHeaders,
 } from "@/constant/default-values/DashboardTables";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { ApiClient } from "@/wrapper/ApiClient";
+import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default function DashboardSection() {
+  const [data, setData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      setIsLoading(true);
+      try {
+        const res = await ApiClient(() => ({
+          url: "/api/dashboard",
+          method: "GET",
+        }));
+        if (res.success) {
+          setData(res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchDashboardData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section className="h-full p-5 flex flex-col gap-5">
+        <div className="flex justify-center gap-5 overflow-x-auto pb-2">
+          <Skeleton className="h-[150px] w-64 rounded-xl" />
+          <Skeleton className="h-[150px] w-64 rounded-xl" />
+          <Skeleton className="h-[150px] w-64 rounded-xl" />
+          <Skeleton className="h-[150px] w-64 rounded-xl" />
+        </div>
+        <Skeleton className="h-[350px] w-full rounded-xl" />
+        <div className="flex gap-5">
+          <Skeleton className="h-[300px] w-1/2 rounded-xl" />
+          <Skeleton className="h-[300px] w-1/2 rounded-xl" />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="h-full p-5 flex flex-col gap-5">
-      <CardSection />
-      <ChartArea />
-      <TableSection />
+      <CardSection stats={data?.stats || {}} />
+      <ChartArea chartData={data?.chartData || []} />
+      <TableSection books={data?.recentBooks || []} members={data?.recentMembers || []} />
     </section>
   );
 }
 
-const CardSection = () => (
+const CardSection = ({ stats }: { stats: any }) => (
   <div className="flex justify-center gap-5 overflow-x-auto pb-2">
     <SummaryCard
-      label="Total Revenue"
-      value="$1,250.00"
-      change="+12.5%"
+      label="Total Books"
+      value={stats.totalBooks?.toString() || "0"}
+      change=""
       trend="up"
-      description="Trending up this month"
-      footer="Visitors for the last 6 months"
+      description="Books in the system"
+      footer="Overall Collection"
     />
     <SummaryCard
-      label="New Customers"
-      value="1,234"
-      change="-20%"
-      trend="down"
-      description="Down 20% this period"
-      footer="Acquisition needs attention"
+      label="Total Members"
+      value={stats.totalMembers?.toString() || "0"}
+      change=""
+      trend="up"
+      description="Registered Students"
+      footer="System Users"
     />
     <SummaryCard
-      label="Active Accounts"
-      value="45,678"
-      change="+12.5%"
+      label="Total Requests"
+      value={stats.totalApplications?.toString() || "0"}
+      change=""
       trend="up"
-      description="Strong user retention"
-      footer="Engagement exceed targets"
+      description="All time applications"
+      footer="Borrow & Return requests"
     />
     <SummaryCard
-      label="Growth Rate"
-      value="4.5%"
-      change="+4.5%"
+      label="Pending Actions"
+      value={stats.pendingApplications?.toString() || "0"}
+      change=""
       trend="up"
-      description="Steady performance Increase"
-      footer="Meets growth projections"
+      description="Requires admin attention"
+      footer="Pending applications"
     />
   </div>
 );
 
-const TableSection = () => (
+const TableSection = ({ books, members }: { books: any[], members: any[] }) => (
   <div className="flex items-start gap-5">
     <DataTable
       headers={BookTableHeaders}
-      data={demoBooksData}
+      data={books}
       actionLabel="Details"
-      renderAction={(data) => <Button>View Details</Button>}
+      renderAction={(data) => (
+        <Link href={`/books/${data?.bookId}`}>
+          <Button variant="outline" size="sm">View Details</Button>
+        </Link>
+      )}
     />
     <DataTable
       headers={UserTableHeaders}
-      data={demoUserData}
+      data={members}
       actionLabel="Details"
-      renderAction={(data) => <Button>View Details</Button>}
+      renderAction={(data) => (
+        <Link href={`/members/${data?.memberId}`}>
+          <Button variant="outline" size="sm">View Details</Button>
+        </Link>
+      )}
     />
   </div>
 );

@@ -39,7 +39,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function ChartArea() {
+export default function ChartArea({ chartData = [] }: { chartData?: any[] }) {
   const [timeRange, setTimeRange] = useState("7d");
 
   const filteredData = chartData.filter((item) => {
