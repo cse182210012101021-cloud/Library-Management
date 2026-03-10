@@ -72,6 +72,7 @@ export default function ApplyBookForm({
           type="submit"
           disabled={!isValid || isSubmitting}
           loading={isSubmitting}
+          variant="outline"
           className="w-full md:w-auto font-bold uppercase tracking-widest text-[11px]"
         >
           Dispatch Request

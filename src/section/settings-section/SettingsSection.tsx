@@ -123,7 +123,7 @@ export default function SettingsSection() {
                                 />
                             </div>
                             <div className="flex justify-end">
-                                <Button type="submit" disabled={isLoading}>
+                                <Button type="submit" disabled={isLoading} variant="outline">
                                     {isLoading ? "Updating..." : "Update Password"}
                                 </Button>
                             </div>

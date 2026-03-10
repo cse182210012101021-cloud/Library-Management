@@ -115,7 +115,7 @@ export default function ApplicationSection({
           <Badge
             variant={
               app.status === "APPROVED"
-                ? "default"
+                ? "outline"
                 : app.status === "REJECTED"
                   ? "destructive"
                   : app.status === "RETURNED"
@@ -124,8 +124,10 @@ export default function ApplicationSection({
             }
             className={
               app.status === "RETURN_PENDING"
-                ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                : ""
+                ? "bg-yellow-500 hover:bg-yellow-600 text-white border-none"
+                : app.status === "APPROVED"
+                  ? "border-green-500 text-green-600 bg-green-50 dark:bg-green-950/20"
+                  : ""
             }
           >
             {app.status === "RETURN_PENDING" ? "RETURN PENDING" : app.status}

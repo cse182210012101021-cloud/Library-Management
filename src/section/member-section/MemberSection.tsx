@@ -86,6 +86,7 @@ export default function MemberSection({ members }: MemberProps) {
             <Button
               asChild
               className="h-8 uppercase font-black tracking-widest text-[10px]"
+              variant="outline"
             >
               <Link href={AppRouterUtils.MEMBER_DETAILS(row.registrationNo)}>
                 View
