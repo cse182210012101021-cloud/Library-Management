@@ -84,7 +84,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem className="py-2">
             <SidebarMenuButton
-              className={`h-full cursor-pointer ${isActivePath(pathName, AppRouterUtils.PROFILE) && "bg-sidebar-accent text-sidebar-accent-foreground"
+              className={`h-full cursor-pointer ${isActivePath(pathName, AppRouterUtils.PROFILE) && "bg-gray-200 dark:bg-gray-800 text-foreground"
                 }`}
             >
               <Link
@@ -119,7 +119,7 @@ const NavItems = ({ items, pathName = "", className = "" }: NavItemsProps) => (
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
-              className={`${isActivePath(pathName, item.url) && "bg-sidebar-accent text-sidebar-accent-foreground"}`}
+              className={`${isActivePath(pathName, item.url) && "bg-gray-200 dark:bg-gray-800 text-foreground"}`}
               tooltip={item.title}
               asChild
             >
