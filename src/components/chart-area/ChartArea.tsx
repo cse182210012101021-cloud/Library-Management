@@ -61,7 +61,6 @@ export default function ChartArea({ chartData = [], userType }: { chartData?: an
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Statistics</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
             {timeRange === "90d" ? "Total for the last 3 months" : timeRange === "30d" ? "Total for the last 30 days" : "Total for the last 7 days"}
