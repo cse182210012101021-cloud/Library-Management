@@ -160,10 +160,15 @@ export class ApplicationService {
     await application.save();
 
     // Trigger Notification
+    const isReturned = status === ApplicationStatus.RETURNED;
+    const fineText = isReturned && application.fineAmount && application.fineAmount > 0
+      ? ` with a fine of ${application.fineAmount}.`
+      : ".";
+
     await NotificationService.createNotification({
       userId: application.userId.toString(),
       title: `Application ${status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}`,
-      message: `Your book application (ID: ${(application as any)._id.toString().slice(-6).toUpperCase()}) has been ${status.toLowerCase()}.`,
+      message: `Your book application (ID: ${(application as any)._id.toString().slice(-6).toUpperCase()}) has been ${status.toLowerCase()}${fineText}`,
       type: status === ApplicationStatus.APPROVED ? NotificationType.SUCCESS : status === ApplicationStatus.REJECTED ? NotificationType.ERROR : NotificationType.INFO,
       link: "/applications",
     });

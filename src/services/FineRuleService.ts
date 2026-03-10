@@ -1,4 +1,7 @@
 import FineRule from "@/model/FineRule";
+import { NotificationService } from "./NotificationService";
+import { NotificationType } from "@/model/Notification";
+import { MemberService } from "./MemberService";
 
 export class FineRuleService {
   static async getFineRule() {
@@ -31,6 +34,19 @@ export class FineRuleService {
     }
 
     await fineRule.save();
+
+    // Notify all students about the rule change
+    const studentIds = await MemberService.getStudentIds();
+    for (const studentId of studentIds) {
+      await NotificationService.createNotification({
+        userId: studentId,
+        title: "Fine Policy Updated",
+        message: `Library fine rules have been updated. New rate: ${data.chargesPerDay}/day after ${data.gracePeriod} days.`,
+        type: NotificationType.WARNING,
+        link: "/profile",
+      });
+    }
+
     return fineRule;
   }
 }

@@ -145,4 +145,9 @@ export class MemberService {
     const admins = await Member.find({ userType: UserType.ADMIN }).select("_id");
     return admins.map((admin) => admin._id.toString());
   }
+
+  static async getStudentIds() {
+    const students = await Member.find({ userType: UserType.STUDENT }).select("_id");
+    return students.map((student) => student._id.toString());
+  }
 }
