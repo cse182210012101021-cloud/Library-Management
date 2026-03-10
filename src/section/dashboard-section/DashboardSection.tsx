@@ -126,7 +126,7 @@ const TableSection = ({ books, members, userType }: { books: any[], members: any
         data={members}
         actionLabel="Details"
         renderAction={(data) => (
-          <Link href={`/members/${data?.memberId}`}>
+          <Link href={`/members/${data?.registrationNo}`}>
             <Button variant="outline" size="sm">View Details</Button>
           </Link>
         )}
