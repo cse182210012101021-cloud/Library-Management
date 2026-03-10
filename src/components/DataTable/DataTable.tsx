@@ -48,7 +48,7 @@ export default function DataTable({
         {data.map((row, rowIndex) => (
           <TableRow
             key={rowIndex}
-            className="bg-gray-900/50 hover:bg-gray-800/50"
+            className="bg-muted/40 hover:bg-muted/70 text-foreground"
           >
             {headers.map((header, colIndex) => {
               const alignment =
