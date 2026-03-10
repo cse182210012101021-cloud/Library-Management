@@ -30,9 +30,9 @@ export function NotificationPopover() {
                 method: "GET",
             }));
             if (res.status === 200) {
-                const data = res.data as any[];
-                setNotifications(data);
-                setUnreadCount(data.filter((n: any) => !n.isRead).length);
+                const data = (res.data || []) as any[];
+                setNotifications(Array.isArray(data) ? data : []);
+                setUnreadCount(Array.isArray(data) ? data.filter((n: any) => !n.isRead).length : 0);
             }
         } catch (error) {
             console.error("Failed to fetch notifications", error);
@@ -41,7 +41,7 @@ export function NotificationPopover() {
 
     useEffect(() => {
         fetchNotifications();
-        const interval = setInterval(fetchNotifications, 30000); // Polling every 30s
+        const interval = setInterval(fetchNotifications, 10000); // Polling every 10s
         return () => clearInterval(interval);
     }, [user]);
 

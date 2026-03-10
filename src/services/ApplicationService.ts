@@ -194,6 +194,7 @@ export class ApplicationService {
 
     // Notify Admins (For now, just a generic system notification or notify all admins if needed)
     // In a real app we might fetch all admins, here we can at least notify the user that their request is sent.
+    // Notify Student
     await NotificationService.createNotification({
       userId: application.userId.toString(),
       title: "Return Request Sent",
@@ -201,6 +202,18 @@ export class ApplicationService {
       type: NotificationType.INFO,
       link: "/applications",
     });
+
+    // Notify all Admins
+    const adminIds = await MemberService.getAdminIds();
+    for (const adminId of adminIds) {
+      await NotificationService.createNotification({
+        userId: adminId,
+        title: "Return Request Received",
+        message: `A student has requested to return a book (ID: ${application._id.toString().slice(-6).toUpperCase()}).`,
+        type: NotificationType.INFO,
+        link: "/applications",
+      });
+    }
 
     return application;
   }
@@ -250,6 +263,19 @@ export class ApplicationService {
     application.toDate = new Date(toDate);
 
     await application.save();
+
+    // Notify all Admins that a pending application has been updated
+    const adminIds = await MemberService.getAdminIds();
+    for (const adminId of adminIds) {
+      await NotificationService.createNotification({
+        userId: adminId,
+        title: "Application Updated",
+        message: `A student has updated their pending book application (ID: ${application._id.toString().slice(-6).toUpperCase()}).`,
+        type: NotificationType.INFO,
+        link: "/applications",
+      });
+    }
+
     return application;
   }
 
