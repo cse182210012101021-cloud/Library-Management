@@ -159,4 +159,24 @@ export class ApplicationController {
       message: "Return request submitted successfully",
     };
   }
+
+  static async getApplicationsByAdmin(req: NextRequest) {
+    const { searchParams } = new URL(req.url);
+    const adminId = searchParams.get("adminId");
+
+    if (!adminId) {
+      return {
+        status: HttpStatusCode.BAD_REQUEST,
+        message: "Admin ID is required",
+      };
+    }
+
+    const applications = await ApplicationService.getApplicationsByAdmin(adminId);
+
+    return {
+      status: HttpStatusCode.OK,
+      data: applications,
+      message: MESSAGE.API.GET_APPLICATIONS,
+    };
+  }
 }

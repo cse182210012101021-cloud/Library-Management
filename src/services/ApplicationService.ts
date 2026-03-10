@@ -203,4 +203,18 @@ export class ApplicationService {
     await application.save();
     return application;
   }
+
+  static async getApplicationsByAdmin(adminId: string) {
+    const applications = await Application.find({ updatedBy: adminId })
+      .populate("bookIds")
+      .populate({
+        path: "userId",
+        populate: {
+          path: "referenceId",
+        },
+      })
+      .sort({ updatedAt: -1 });
+    return applications;
+  }
 }
+

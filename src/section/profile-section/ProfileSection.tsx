@@ -40,8 +40,8 @@ export default function ProfileSection() {
   useEffect(() => {
     const updateProfileImage = async () => {
       if (
-        profileImage !== undefined && 
-        profileData && 
+        profileImage !== undefined &&
+        profileData &&
         profileImage !== (profileData.referenceId?.image || profileData.image || "") &&
         !isUpdatingImage
       ) {
@@ -99,10 +99,18 @@ export default function ProfileSection() {
             profileImage: userData.referenceId?.image || userData.image || "",
           });
 
-          // If student, fetch borrow history
+          // Fetch borrow history based on user type
           if (userData.userType === UserType.STUDENT) {
             const appRes = await ApiClient(() => ({
               url: `/api/student/application?userId=${user.userId}`,
+              method: "GET",
+            }));
+            if (appRes.success) {
+              setApplications(appRes.data);
+            }
+          } else if (userData.userType === UserType.ADMIN) {
+            const appRes = await ApiClient(() => ({
+              url: `/api/application/history?adminId=${user.userId}`,
               method: "GET",
             }));
             if (appRes.success) {
@@ -121,6 +129,13 @@ export default function ProfileSection() {
   }, [user, reset]);
 
   const stats = useMemo(() => {
+    if (user?.userType === UserType.ADMIN) {
+      const totalApproved = applications.filter((app) => [ApplicationStatus.APPROVED, ApplicationStatus.RETURN_PENDING, ApplicationStatus.RETURNED].includes(app.status)).length;
+      const totalRejected = applications.filter((app) => app.status === ApplicationStatus.REJECTED).length;
+      const totalReturned = applications.filter((app) => app.status === ApplicationStatus.RETURNED).length;
+      return { totalApproved, totalRejected, totalReturned };
+    }
+
     const totalBorrowed = applications.filter((app) =>
       [
         ApplicationStatus.APPROVED,
@@ -134,16 +149,19 @@ export default function ProfileSection() {
     ).length;
 
     return { totalBorrowed, totalReturned };
-  }, [applications]);
+  }, [applications, user?.userType]);
 
   const tableData = useMemo(() => {
     return applications.map((app, index) => {
       const book = app.bookIds?.[0] || {};
+      const studentName = app.userId?.referenceId?.name || "Unknown Student";
+
       return {
         serialNo: index + 1,
         bookId: book.isbnNo || "N/A",
         bookName: book.title || "Unknown Book",
-        authorName: book.author || "Unknown Author",
+        studentName: user?.userType === UserType.ADMIN ? studentName : undefined,
+        authorName: user?.userType === UserType.STUDENT ? (book.author || "Unknown Author") : undefined,
         purchaseDate: app.appliedDate
           ? format(new Date(app.appliedDate), "dd MMM, yyyy")
           : "N/A",
@@ -151,9 +169,10 @@ export default function ProfileSection() {
           ? format(new Date(app.returnDate), "dd MMM, yyyy")
           : "N/A",
         status: app.status,
+        updatedAt: app.updatedAt ? format(new Date(app.updatedAt), "dd MMM, yyyy hh:mm a") : "N/A"
       };
     });
-  }, [applications]);
+  }, [applications, user?.userType]);
 
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * DEFAULT_PAGE_LIMIT;
@@ -214,10 +233,30 @@ export default function ProfileSection() {
                 </p>
               </>
             ) : (
-              <p>
-                <span className="font-semibold mr-3">Email:</span>
-                {profileData?.email}
-              </p>
+              <>
+                <p>
+                  <span className="font-semibold mr-3">Email:</span>
+                  {profileData?.email}
+                </p>
+                <p>
+                  <span className="font-semibold mr-3">
+                    Approved Applications:
+                  </span>
+                  {stats.totalApproved || 0}
+                </p>
+                <p>
+                  <span className="font-semibold mr-3">
+                    Rejected Applications:
+                  </span>
+                  {stats.totalRejected || 0}
+                </p>
+                <p>
+                  <span className="font-semibold mr-3">
+                    Returned Actions:
+                  </span>
+                  {stats.totalReturned || 0}
+                </p>
+              </>
             )}
           </div>
         </div>
@@ -228,6 +267,40 @@ export default function ProfileSection() {
               headers={TableHeaders}
               data={paginatedData}
               actionLabel="Status"
+              renderAction={(data) => {
+                const badge = getVariant(data?.status);
+                return (
+                  <Badge variant={badge.variant} className="w-[90px]">
+                    {badge.label}
+                  </Badge>
+                );
+              }}
+            />
+            {applications.length > DEFAULT_PAGE_LIMIT && (
+              <TablePagination
+                totalItems={applications.length}
+                currentPage={currentPage}
+                onPageChange={(page) => {
+                  setCurrentPage(page);
+                }}
+              />
+            )}
+          </div>
+        )}
+
+        {user?.userType === UserType.ADMIN && (
+          <div className="flex flex-col gap-4 mt-8">
+            <h4 className="text-xl font-semibold mb-2">History of Actions</h4>
+            <DataTable
+              headers={[
+                { value: "serialNo", label: "S.N" },
+                { value: "bookName", label: "Book Name" },
+                { value: "studentName", label: "Student Name" },
+                { value: "purchaseDate", label: "Applied Date" },
+                { value: "updatedAt", label: "Action Date" },
+              ]}
+              data={paginatedData}
+              actionLabel="Action Taken"
               renderAction={(data) => {
                 const badge = getVariant(data?.status);
                 return (
