@@ -64,9 +64,11 @@ export default function ChartArea({ chartData = [], userType }: { chartData?: an
         <CardTitle>Statistics</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
+            {timeRange === "90d" ? "Total for the last 3 months" : timeRange === "30d" ? "Total for the last 30 days" : "Total for the last 7 days"}
           </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
+          <span className="@[540px]/card:hidden">
+            {timeRange === "90d" ? "Last 3 months" : timeRange === "30d" ? "Last 30 days" : "Last 7 days"}
+          </span>
         </CardDescription>
         <CardAction>
           <ToggleGroup
