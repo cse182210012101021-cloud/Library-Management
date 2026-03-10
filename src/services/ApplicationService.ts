@@ -4,6 +4,8 @@ import Application from "@/model/Application";
 import Book from "@/model/Book";
 import { ApiError } from "@/wrapper/ApiError";
 import { ApplicationStatus } from "@/constant/enum/ApplicationStatus";
+import { NotificationService } from "./NotificationService";
+import { NotificationType } from "@/model/Notification";
 
 export class ApplicationService {
   static async createApplications({
@@ -134,6 +136,15 @@ export class ApplicationService {
     application.updatedBy = adminId as unknown as mongoose.Types.ObjectId;
     await application.save();
 
+    // Trigger Notification
+    await NotificationService.createNotification({
+      userId: application.userId.toString(),
+      title: `Application ${status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}`,
+      message: `Your book application (ID: ${(application as any)._id.toString().slice(-6).toUpperCase()}) has been ${status.toLowerCase()}.`,
+      type: status === ApplicationStatus.APPROVED ? NotificationType.SUCCESS : status === ApplicationStatus.REJECTED ? NotificationType.ERROR : NotificationType.INFO,
+      link: "/applications",
+    });
+
     return application;
   }
 
@@ -152,6 +163,16 @@ export class ApplicationService {
 
     application.status = ApplicationStatus.RETURN_PENDING;
     await application.save();
+
+    // Notify Admins (For now, just a generic system notification or notify all admins if needed)
+    // In a real app we might fetch all admins, here we can at least notify the user that their request is sent.
+    await NotificationService.createNotification({
+      userId: application.userId.toString(),
+      title: "Return Request Sent",
+      message: "Your request to return the book has been submitted and is pending admin approval.",
+      type: NotificationType.INFO,
+      link: "/applications",
+    });
 
     return application;
   }

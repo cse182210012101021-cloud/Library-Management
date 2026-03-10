@@ -7,7 +7,7 @@ import { signOutApi } from "@/constant/ApiRoutes";
 import { AppRouterUtils } from "@/utils/AppRouterUtils";
 import { isErrorResponse } from "@/utils/CommonUtils";
 import { ApiClient } from "@/wrapper/ApiClient";
-import { IconBellFilled } from "@tabler/icons-react";
+import { NotificationPopover } from "../notification-popover/NotificationPopover";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/providers/AlertProvider";
 
@@ -33,7 +33,7 @@ export function SiteHeader() {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         <div className="ml-auto flex items-center gap-2">
-          <IconBellFilled />
+          <NotificationPopover />
           <Button
             variant="ghost"
             onClick={handleLogOut}
