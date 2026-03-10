@@ -140,4 +140,9 @@ export class MemberService {
 
     return { success: true, message: "Password changed successfully" };
   }
+
+  static async getAdminIds() {
+    const admins = await Member.find({ userType: UserType.ADMIN }).select("_id");
+    return admins.map((admin) => admin._id.toString());
+  }
 }

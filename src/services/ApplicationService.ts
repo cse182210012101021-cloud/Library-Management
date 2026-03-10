@@ -6,6 +6,7 @@ import { ApiError } from "@/wrapper/ApiError";
 import { ApplicationStatus } from "@/constant/enum/ApplicationStatus";
 import { NotificationService } from "./NotificationService";
 import { NotificationType } from "@/model/Notification";
+import { MemberService } from "./MemberService";
 
 export class ApplicationService {
   static async createApplications({
@@ -41,6 +42,28 @@ export class ApplicationService {
       toDate: new Date(toDate),
       quantity,
     });
+
+    // Trigger Notifications
+    // 1. Notify the student
+    await NotificationService.createNotification({
+      userId: userId,
+      title: "Request Sent",
+      message: `Your book application (ID: ${(newApplication as any)._id.toString().slice(-6).toUpperCase()}) has been submitted.`,
+      type: NotificationType.INFO,
+      link: "/applications",
+    });
+
+    // 2. Notify all admins
+    const adminIds = await MemberService.getAdminIds();
+    for (const adminId of adminIds) {
+      await NotificationService.createNotification({
+        userId: adminId,
+        title: "New Request Received",
+        message: `A new book application has been submitted (ID: ${(newApplication as any)._id.toString().slice(-6).toUpperCase()}).`,
+        type: NotificationType.INFO,
+        link: "/applications",
+      });
+    }
 
     return newApplication;
   }
