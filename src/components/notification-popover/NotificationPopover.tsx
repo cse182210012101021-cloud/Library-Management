@@ -29,9 +29,10 @@ export function NotificationPopover() {
                 url: `/api/notifications?userId=${user.userId}`,
                 method: "GET",
             }));
-            if (res.success) {
-                setNotifications(res.data);
-                setUnreadCount(res.data.filter((n: any) => !n.isRead).length);
+            if (res.status === 200) {
+                const data = res.data as any[];
+                setNotifications(data);
+                setUnreadCount(data.filter((n: any) => !n.isRead).length);
             }
         } catch (error) {
             console.error("Failed to fetch notifications", error);
@@ -50,7 +51,7 @@ export function NotificationPopover() {
                 url: `/api/notifications?notificationId=${id}`,
                 method: "PATCH",
             }));
-            if (res.success) {
+            if (res.status === 200) {
                 setNotifications((prev) =>
                     prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
                 );
@@ -68,7 +69,7 @@ export function NotificationPopover() {
                 url: `/api/notifications?action=readAll&userId=${user.userId}`,
                 method: "PATCH",
             }));
-            if (res.success) {
+            if (res.status === 200) {
                 setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
                 setUnreadCount(0);
             }
