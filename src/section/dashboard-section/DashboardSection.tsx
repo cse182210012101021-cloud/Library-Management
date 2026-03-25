@@ -71,40 +71,48 @@ export default function DashboardSection() {
 
 const CardSection = ({ stats, userType }: { stats: any, userType: any }) => (
   <div className="flex justify-center gap-5 overflow-x-auto pb-2">
-    <SummaryCard
-      label="Total Books"
-      value={stats.totalBooks?.toString() || "0"}
-      change=""
-      trend="up"
-      description="Books in the system"
-      footer="Overall Collection"
-    />
-    {userType !== UserType.STUDENT && (
+    <Link href="/books" className="block hover:opacity-90 transition-opacity">
       <SummaryCard
-        label="Total Members"
-        value={stats.totalMembers?.toString() || "0"}
+        label="Total Books"
+        value={stats.totalBooks?.toString() || "0"}
         change=""
         trend="up"
-        description="Registered Students"
-        footer="System Users"
+        description="Books in the system"
+        footer="Overall Collection"
       />
+    </Link>
+    {userType !== UserType.STUDENT && (
+      <Link href="/members" className="block hover:opacity-90 transition-opacity">
+        <SummaryCard
+          label="Total Members"
+          value={stats.totalMembers?.toString() || "0"}
+          change=""
+          trend="up"
+          description="Registered Students"
+          footer="System Users"
+        />
+      </Link>
     )}
-    <SummaryCard
-      label="Total Requests"
-      value={stats.totalApplications?.toString() || "0"}
-      change=""
-      trend="up"
-      description="All time applications"
-      footer="Borrow & Return requests"
-    />
-    <SummaryCard
-      label="Pending Actions"
-      value={stats.pendingApplications?.toString() || "0"}
-      change=""
-      trend="up"
-      description="Requires admin attention"
-      footer="Pending applications"
-    />
+    <Link href="/applications" className="block hover:opacity-90 transition-opacity">
+      <SummaryCard
+        label="Total Requests"
+        value={stats.totalApplications?.toString() || "0"}
+        change=""
+        trend="up"
+        description="All time applications"
+        footer="Borrow & Return requests"
+      />
+    </Link>
+    <Link href="/applications" className="block hover:opacity-90 transition-opacity">
+      <SummaryCard
+        label="Pending Actions"
+        value={stats.pendingApplications?.toString() || "0"}
+        change=""
+        trend="up"
+        description="Requires admin attention"
+        footer="Pending applications"
+      />
+    </Link>
   </div>
 );
 
