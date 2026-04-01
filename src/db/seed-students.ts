@@ -6,9 +6,16 @@ import { UserType } from "@/constant/enum/UserType";
 
 export async function seedStudents() {
   try {
+    // 1. Quick check: If we already have many students, skip seeding
+    const studentCount = await Student.countDocuments();
+    if (studentCount >= 200) {
+      return; 
+    }
+
+    console.log("Seeding students (this may take a moment)...");
     const hashedPassword = await bcrypt.hash("123456", 10); // Default password for all students
 
-    // 1. Seed Specific Sample Students
+    // 2. Seed Specific Sample Students
     for (const studentData of sampleStudents) {
       const student = await Student.findOneAndUpdate(
         { studentId: studentData.studentId },
@@ -30,7 +37,7 @@ export async function seedStudents() {
       );
     }
 
-    // 2. Generate and Seed 200 Students (ID suffix 0001 to 0200)
+    // 3. Generate and Seed 200 Students (ID suffix 0001 to 0200)
     for (let i = 1; i <= 200; i++) {
       const suffix = i.toString().padStart(4, '0');
       const studentId = `018221001210${suffix}`;
