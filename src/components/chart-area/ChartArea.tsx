@@ -42,7 +42,7 @@ const chartConfig = {
 import { UserType } from "@/constant/enum/UserType";
 
 export default function ChartArea({ chartData = [], userType }: { chartData?: any[], userType?: string }) {
-  const [timeRange, setTimeRange] = useState("7d");
+  const [timeRange, setTimeRange] = useState("90d");
 
   const filteredData = chartData.filter((item) => {
     const date = new Date(item.date);

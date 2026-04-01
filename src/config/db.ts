@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { seedBooks } from "@/db/seed";
 
 let isConnected = false;
 
@@ -23,7 +22,11 @@ export async function connectDB(): Promise<void> {
       console.log("MongoDB connected successfully");
     });
 
+    const { seedBooks } = await import("@/db/seed");
+    const { seedStudents } = await import("@/db/seed-students");
+
     await seedBooks();
+    await seedStudents();
 
     mongoose.connection.on("error", (err) => {
       console.error("MongoDB connection error:", err);
