@@ -1,8 +1,8 @@
-import { connectDB } from "@/config/db";
-import { BookService } from "@/services/BookService";
-import { jsonObject } from "@/utils/CommonUtils";
+import { connectDB } from "@/shared/config/db";
+import { BookService } from "@/backend/services/BookService";
+import { jsonObject } from "@/shared/utils/CommonUtils";
 import { notFound } from "next/navigation";
-import BookDetailsSection from "@/section/book-details-section/BookDetailsSection";
+import BookDetailsSection from "@/frontend/section/book-details-section/BookDetailsSection";
 
 const loadBook = async (id: string) => {
   try {

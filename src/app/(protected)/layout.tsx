@@ -1,9 +1,9 @@
 import React from "react";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar/AppSidebar";
-import { SiteHeader } from "@/components/site-header/SiteHeader";
-import { getServerAuthUser } from "@/utils/UserUtils";
-import { AuthProvider } from "@/providers/AuthProvider";
+import { SidebarProvider, SidebarInset } from "@/frontend/components/ui/sidebar";
+import { AppSidebar } from "@/frontend/components/app-sidebar/AppSidebar";
+import { SiteHeader } from "@/frontend/components/site-header/SiteHeader";
+import { getServerAuthUser } from "@/shared/utils/UserUtils";
+import { AuthProvider } from "@/shared/providers/AuthProvider";
 
 export default async function ProtectedLayout({
   children,

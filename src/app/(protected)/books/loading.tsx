@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/frontend/components/ui/separator";
 
 export default function Loading() {
   return (

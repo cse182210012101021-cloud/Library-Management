@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
-import { apiHandler } from "@/wrapper/ApiHandler";
-import { HttpStatusCode } from "@/constant/enum/HttpStatusCode";
-import { MESSAGE } from "@/lib/message";
-import { StudentController } from "@/controllers/StudentController";
+import { apiHandler } from "@/frontend/wrapper/ApiHandler";
+import { HttpStatusCode } from "@/shared/constant/enum/HttpStatusCode";
+import { MESSAGE } from "@/shared/lib/message";
+import { StudentController } from "@/backend/controllers/StudentController";
 
 export const GET = apiHandler(
   async (req: NextRequest, context?: { params?: { email: string } }) => {

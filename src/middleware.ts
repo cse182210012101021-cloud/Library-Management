@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AppRouterUtils } from "./utils/AppRouterUtils";
-import { getMiddlewareAuthUser } from "./utils/UserUtils";
-import { UserType } from "./constant/enum/UserType";
-import { HttpStatusCode } from "./constant/enum/HttpStatusCode";
-import { UserToken } from "./types/UserToken";
-import { ApiRoutes } from "./utils/ApiRoutes";
+import { AppRouterUtils } from "./shared/utils/AppRouterUtils";
+import { getMiddlewareAuthUser } from "./shared/utils/UserUtils";
+import { UserType } from "./shared/constant/enum/UserType";
+import { HttpStatusCode } from "./shared/constant/enum/HttpStatusCode";
+import { UserToken } from "./shared/types/UserToken";
+import { ApiRoutes } from "./shared/utils/ApiRoutes";
 
 const publicPaths = [AppRouterUtils.ROOT];
 const protectedPath = [

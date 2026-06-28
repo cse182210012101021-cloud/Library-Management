@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
-import { apiHandler } from "@/wrapper/ApiHandler";
-import { validateBookUpdate } from "@/validator/server-validate/BookValidate";
-import { BookController } from "@/controllers/BookController";
-import { HttpStatusCode } from "@/constant/enum/HttpStatusCode";
-import { MESSAGE } from "@/lib/message";
+import { apiHandler } from "@/frontend/wrapper/ApiHandler";
+import { validateBookUpdate } from "@/backend/validator/server-validate/BookValidate";
+import { BookController } from "@/backend/controllers/BookController";
+import { HttpStatusCode } from "@/shared/constant/enum/HttpStatusCode";
+import { MESSAGE } from "@/shared/lib/message";
 
 export const PATCH = apiHandler(
   async (req: NextRequest, context?: { params?: { id: string } }) => {

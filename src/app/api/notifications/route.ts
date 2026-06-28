@@ -1,6 +1,6 @@
-import { apiHandler } from "@/wrapper/ApiHandler";
-import { NotificationService } from "@/services/NotificationService";
-import { ApiError } from "@/wrapper/ApiError";
+import { apiHandler } from "@/frontend/wrapper/ApiHandler";
+import { NotificationService } from "@/backend/services/NotificationService";
+import { ApiError } from "@/frontend/wrapper/ApiError";
 
 export const GET = apiHandler(async (req) => {
     const { searchParams } = new URL(req.url);

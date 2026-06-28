@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
-import { apiHandler } from "@/wrapper/ApiHandler";
-import { validateBook } from "@/validator/server-validate/BookValidate";
-import { BookController } from "@/controllers/BookController";
-import { HttpStatusCode } from "@/constant/enum/HttpStatusCode";
-import { MESSAGE } from "@/lib/message";
+import { apiHandler } from "@/frontend/wrapper/ApiHandler";
+import { validateBook } from "@/backend/validator/server-validate/BookValidate";
+import { BookController } from "@/backend/controllers/BookController";
+import { HttpStatusCode } from "@/shared/constant/enum/HttpStatusCode";
+import { MESSAGE } from "@/shared/lib/message";
 
 export const POST = apiHandler(async (req: NextRequest) => {
   const reqBody = await req.json();

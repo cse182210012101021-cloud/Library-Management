@@ -1,6 +1,6 @@
-import { connectDB } from "@/config/db";
-import MemberSection from "@/section/member-section/MemberSection";
-import { MemberService } from "@/services/MemberService";
+import { connectDB } from "@/shared/config/db";
+import MemberSection from "@/frontend/section/member-section/MemberSection";
+import { MemberService } from "@/backend/services/MemberService";
 import { notFound } from "next/navigation";
 
 const loadMembers = async () => {

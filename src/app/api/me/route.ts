@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
-import { apiHandler } from "@/wrapper/ApiHandler";
-import { MemberController } from "@/controllers/MemberController";
-import { getServerAuthUser } from "@/utils/UserUtils";
-import { HttpStatusCode } from "@/constant/enum/HttpStatusCode";
+import { apiHandler } from "@/frontend/wrapper/ApiHandler";
+import { MemberController } from "@/backend/controllers/MemberController";
+import { getServerAuthUser } from "@/shared/utils/UserUtils";
+import { HttpStatusCode } from "@/shared/constant/enum/HttpStatusCode";
 
 export const GET = apiHandler(async (req: NextRequest) => {
   const user = await getServerAuthUser();

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ToastProvider } from "@/providers/AlertProvider";
+import { ToastProvider } from "@/shared/providers/AlertProvider";
 import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {

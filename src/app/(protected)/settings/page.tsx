@@ -1,4 +1,4 @@
-import SettingsSection from "@/section/settings-section/SettingsSection";
+import SettingsSection from "@/frontend/section/settings-section/SettingsSection";
 
 export default function Page() {
   return <SettingsSection />;

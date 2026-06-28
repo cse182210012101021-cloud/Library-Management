@@ -1,10 +1,10 @@
-import { connectDB } from "@/config/db";
-import ApplicationSection from "@/section/application-section/ApplicationSection";
-import { ApplicationService } from "@/services/ApplicationService";
-import { jsonObject } from "@/utils/CommonUtils";
-import { getServerAuthUser } from "@/utils/UserUtils";
+import { connectDB } from "@/shared/config/db";
+import ApplicationSection from "@/frontend/section/application-section/ApplicationSection";
+import { ApplicationService } from "@/backend/services/ApplicationService";
+import { jsonObject } from "@/shared/utils/CommonUtils";
+import { getServerAuthUser } from "@/shared/utils/UserUtils";
 import { notFound } from "next/navigation";
-import { UserType } from "@/constant/enum/UserType";
+import { UserType } from "@/shared/constant/enum/UserType";
 
 const loadApplications = async () => {
   try {

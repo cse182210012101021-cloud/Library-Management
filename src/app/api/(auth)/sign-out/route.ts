@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { apiHandler } from "@/wrapper/ApiHandler";
+import { apiHandler } from "@/frontend/wrapper/ApiHandler";
 
 export const POST = apiHandler(async (req: NextRequest) => {
   return {

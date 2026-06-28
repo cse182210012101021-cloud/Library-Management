@@ -22,7 +22,7 @@ export default function Page() {
           <div className="space-y-4">
             <div>
               <h3 className="font-medium text-white">How do I borrow a book?</h3>
-              <p className="text-sm text-gray-400 mt-1">Go to the 'Books' section after login, find your desired book, and click on 'Apply'.</p>
+              <p className="text-sm text-gray-400 mt-1">Go to the &apos;Books&apos; section after login, find your desired book, and click on &apos;Apply&apos;.</p>
             </div>
 
             <div>
@@ -32,7 +32,7 @@ export default function Page() {
 
             <div>
               <h3 className="font-medium text-white">How can I reset my password?</h3>
-              <p className="text-sm text-gray-400 mt-1">Use the 'Forgot Password' link on the login page to reset your password via email.</p>
+              <p className="text-sm text-gray-400 mt-1">Use the &apos;Forgot Password&apos; link on the login page to reset your password via email.</p>
             </div>
           </div>
         </div>
